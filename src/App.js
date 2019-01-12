@@ -1,156 +1,133 @@
-import React, { Component } from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import config from './config.json'
-// import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
-// import FlatButton from 'material-ui/FlatButton';
+import React from 'react';
+import PropTypes from 'prop-types';
+import AppBar from '@material-ui/core/AppBar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import Hidden from '@material-ui/core/Hidden';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import NestedList from './components/NestedList'
+import Content from './components/Content'
+import { withStyles } from '@material-ui/core/styles';
 
-// const CardExampleExpandable = () => (
-//   <Card>
-//     <CardHeader
-//       title="Without Avatar"
-//       subtitle="Subtitle"
-//       actAsExpander={true}
-//       showExpandableButton={true}
-//     />
-//     <CardActions>
-//       <FlatButton label="Action1" />
-//       <FlatButton label="Action2" />
-//     </CardActions>
-//     <CardText expandable={true}>
-//       Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-//       Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-//       Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-//       Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-//     </CardText>
-//   </Card>
-// );
+const drawerWidth = 240;
 
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
-
-const grid = 8;
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: 'none',
-  padding: grid * 2,
-  margin: `0 ${grid}px 0 0`,
-
-  // change background colour if dragging
-  background: isDragging ? 'lightgreen' : 'white',
-
-  // styles we need to apply on draggables
-  ...draggableStyle,
+const styles = theme => ({
+    root: {
+        display: 'flex',
+    },
+    drawer: {
+        [theme.breakpoints.up('sm')]: {
+            width: drawerWidth,
+            flexShrink: 0,
+        },
+    },
+    appBar: {
+        marginLeft: drawerWidth,
+        [theme.breakpoints.up('sm')]: {
+            width: `calc(100% - ${drawerWidth}px)`,
+        },
+    },
+    menuButton: {
+        marginRight: 20,
+        [theme.breakpoints.up('sm')]: {
+            display: 'none',
+        },
+    },
+    toolbar: theme.mixins.toolbar,
+    drawerPaper: {
+        width: drawerWidth,
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing.unit * 3,
+    },
 });
 
-const getListStyle = isDraggingOver => ({
-  background: isDraggingOver ? 'lightblue' : 'lightgrey',
-  display: 'flex',
-  padding: grid,
-  overflow: 'auto',
-});
+class App extends React.Component {
+    state = {
+        mobileOpen: false,
+    };
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { type: "sentence", data: [] };
-    this.onDragEnd = this.onDragEnd.bind(this);
+    handleDrawerToggle = () => {
+        this.setState(state => ({ mobileOpen: !state.mobileOpen }));
+    };
 
-    this.logState = this.logState.bind(this);
-    // this.setStateHandler = this.setStateHandler.bind(this);
-  }
+    render() {
+        const { classes, theme } = this.props;
 
-  componentWillMount() {
-  
-    fetch(`http://${config.host}/getquestion`, {
-      method: 'get',
-      // mode: "no-cors",
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(json => {
-        this.setState(json);
-        // console.log(this.state.type);
-        // console.log("Current State: " + this.state.data[0].content);
-      });
-  }
-
-  logState() {
-    console.log(this.state);
-  }
-
-  onDragEnd(result) {
-    // dropped outside the list
-    if (!result.destination) {
-      return;
-    }
-
-    const items = reorder(
-      this.state.data,
-      result.source.index,
-      result.destination.index
-    );
-
-    console.log("New State => ");
-    console.log({
-      type: this.state.type,
-      data: items,
-    });
-
-    this.setState({
-      type: this.state.type,
-      data: items,
-    });
-  }
-
-  // Normally you would want to split things out into separate components.
-  // But in this example everything is just done in one place for simplicity
-  render() {
-    return (
-      // <div><CardExampleExpandable /></div>
-      
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable droppableId="droppable" direction="horizontal">
-          {(provided, snapshot) => (
-            <div
-              ref={provided.innerRef}
-              style={getListStyle(snapshot.isDraggingOver)}
-              {...provided.droppableProps}
-            >
-
-              {
-                this.state.data.map((element, index) => (
-                  <Draggable key={index} draggableId={element.index} index={index}>
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        style={getItemStyle(
-                          snapshot.isDragging,
-                          provided.draggableProps.style
-                        )}
-                      >
-                        {element.content}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-
-              {provided.placeholder}
+        const drawer = (
+            <div>
+                <div className={classes.toolbar} />
+                <Divider />
+                <NestedList/>
             </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-    );
-  }
+        );
+
+        return (
+            <div className={classes.root}>
+                <CssBaseline />
+                <AppBar position="fixed" className={classes.appBar}>
+                    <Toolbar>
+                        <IconButton
+                            color="inherit"
+                            aria-label="Open drawer"
+                            onClick={this.handleDrawerToggle}
+                            className={classes.menuButton}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography variant="h6" color="inherit" noWrap>
+                            My Homework
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
+                <nav className={classes.drawer}>
+                    {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+                    <Hidden smUp implementation="css">
+                        <Drawer
+                            container={this.props.container}
+                            variant="temporary"
+                            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+                            open={this.state.mobileOpen}
+                            onClose={this.handleDrawerToggle}
+                            classes={{
+                                paper: classes.drawerPaper,
+                            }}
+                        >
+                            {drawer}
+                        </Drawer>
+                    </Hidden>
+                    <Hidden xsDown implementation="css">
+                        <Drawer
+                            classes={{
+                                paper: classes.drawerPaper,
+                            }}
+                            variant="permanent"
+                            open
+                        >
+                            {drawer}
+                        </Drawer>
+                    </Hidden>
+                </nav>
+                <main className={classes.content}>
+                    <div className={classes.toolbar} />
+                        <Content />
+                </main>
+            </div>
+        );
+    }
 }
 
-export default App;
+App.propTypes = {
+    classes: PropTypes.object.isRequired,
+    // Injected by the documentation to work in an iframe.
+    // You won't need it on your project.
+    container: PropTypes.object,
+    theme: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles, { withTheme: true })(App);

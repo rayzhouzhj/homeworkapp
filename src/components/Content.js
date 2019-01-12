@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { isMobile } from 'react-device-detect';
 import config from '../config.json'
+import hardworking from "../assets/images/hardworking.gif"
+import haha from "../assets/images/haha.gif"
+import ohno from "../assets/images/ohno.gif"
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -44,22 +47,27 @@ const getListStyle = (isMobile, isDraggingOver) => {
             }
         }
 
-        console.log(style);
         return style;
     };
+
+    const imageStyle = {
+        height: "42px", 
+        width: "42px"
+    }
 
 class Content extends Component {
     constructor(props) {
         super(props);
-        this.state = { type: "sentence", data: [] };
+        this.state = {type: "", data: [], in: true, statusImg: hardworking};
         this.onDragEnd = this.onDragEnd.bind(this);
-
-        this.logState = this.logState.bind(this);
-        // this.setStateHandler = this.setStateHandler.bind(this);
+        this.refreshData = this.refreshData.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount(){
+        this.refreshData();
+    }
 
+    refreshData() {
         fetch(`http://${config.host}/getquestion`, {
             method: 'get',
         })
@@ -67,13 +75,36 @@ class Content extends Component {
                 return response.json();
             })
             .then(json => {
+                json.statusImg = hardworking;
                 console.log(json);
                 this.setState(json);
+            })
+            .catch(error => {
+                console.log(error);
             });
     }
 
-    logState() {
+    validate() {
         console.log(this.state);
+
+        let result = true;
+        for(let i = 0; i < this.state.data.length; i++){
+            if (i !== this.state.data[i].index) {
+                console.log(`${i} not correct`);
+                result = false;
+                break;
+            }
+        }
+
+        if(result){
+            let newState = this.state;
+            newState.statusImg = haha;
+            this.setState(newState);
+        } else {
+            let newState = this.state;
+            newState.statusImg = ohno;
+            this.setState(newState)
+        }
     }
 
     onDragEnd(result) {
@@ -98,41 +129,46 @@ class Content extends Component {
     // But in this example everything is just done in one place for simplicity
     render() {
         return (
+            <div>
+                <div id="result">
+                    <img src={this.state.statusImg} style={imageStyle} alt="hard working..."/>
+                </div>
+            
+                <DragDropContext onDragEnd={this.onDragEnd}>
+                    <Droppable droppableId="droppable" direction={isMobile? 'vertical' : 'horizontal'}>
+                        {(provided, snapshot) => (
+                            <div
+                                ref={provided.innerRef}
+                                style={getListStyle(isMobile,snapshot.isDraggingOver)}
+                                {...provided.droppableProps}
+                            >
 
-            <DragDropContext onDragEnd={this.onDragEnd}>
-                <Droppable droppableId="droppable" direction={isMobile? 'vertical' : 'horizontal'}>
-                    {(provided, snapshot) => (
-                        <div
-                            ref={provided.innerRef}
-                            style={getListStyle(isMobile,snapshot.isDraggingOver)}
-                            {...provided.droppableProps}
-                        >
+                                {
+                                    this.state.data.map((element, index) => (
+                                        <Draggable key={index} draggableId={"item-" + element.index} index={index}>
+                                            {(provided, snapshot) => (
+                                                <div
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    style={getItemStyle(
+                                                        isMobile,
+                                                        snapshot.isDragging,
+                                                        provided.draggableProps.style
+                                                    )}
+                                                >
+                                                    {element.content}
+                                                </div>
+                                            )}
+                                        </Draggable>
+                                    ))}
 
-                            {
-                                this.state.data.map((element, index) => (
-                                    <Draggable key={index} draggableId={element.index} index={index}>
-                                        {(provided, snapshot) => (
-                                            <div
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                style={getItemStyle(
-                                                    isMobile,
-                                                    snapshot.isDragging,
-                                                    provided.draggableProps.style
-                                                )}
-                                            >
-                                                {element.content}
-                                            </div>
-                                        )}
-                                    </Draggable>
-                                ))}
-
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-            </DragDropContext>
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+            </div>
         );
     }
 }

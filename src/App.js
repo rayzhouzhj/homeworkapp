@@ -10,7 +10,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import NestedList from './components/NestedList'
-import Content from './components/Content'
+import CardView from './components/CardView'
 import { withStyles } from '@material-ui/core/styles';
 
 const drawerWidth = 240;
@@ -115,7 +115,7 @@ class App extends React.Component {
                 </nav>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-                        <Content />
+                    <CardView />
                 </main>
             </div>
         );

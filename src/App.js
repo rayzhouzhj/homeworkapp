@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import config from './config.json'
 // import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 // import FlatButton from 'material-ui/FlatButton';
 
@@ -66,7 +67,8 @@ class App extends Component {
   }
 
   componentWillMount() {
-    fetch("http://localhost:3000/getquestion", {
+  
+    fetch(`http://${config.host}/getquestion`, {
       method: 'get',
       // mode: "no-cors",
     })

@@ -64,14 +64,9 @@ class Content extends Component {
             method: 'get',
         })
             .then(response => {
-                console.log(response.headers.u);
-
                 return response.json();
             })
             .then(json => {
-                // json.isMobile = false;
-                json.direction = isMobile? 'vertical' : 'horizontal';
-
                 console.log(json);
                 this.setState(json);
             });
@@ -105,7 +100,7 @@ class Content extends Component {
         return (
 
             <DragDropContext onDragEnd={this.onDragEnd}>
-                <Droppable droppableId="droppable" direction={this.state.direction}>
+                <Droppable droppableId="droppable" direction={isMobile? 'vertical' : 'horizontal'}>
                     {(provided, snapshot) => (
                         <div
                             ref={provided.innerRef}

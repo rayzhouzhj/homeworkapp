@@ -55,7 +55,7 @@ const getListStyle = (isMobile, isDraggingOver) => {
         width: "42px"
     }
 
-class Content extends Component {
+class OrderingCard extends Component {
     constructor(props) {
         super(props);
         this.state = {type: "", data: [], in: true, statusImg: hardworking};
@@ -173,4 +173,4 @@ class Content extends Component {
     }
 }
 
-export default Content;
+export default OrderingCard;

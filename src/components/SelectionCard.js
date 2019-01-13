@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import hardworking from "../assets/images/hardworking.gif"
 import haha from "../assets/images/haha.gif"
 import ohno from "../assets/images/ohno.gif"
+import config from '../config.json'
 
 const styles = {
     select: {
@@ -40,98 +41,40 @@ const getImageStyle = (startValidate) => {
 class SelectionCard extends Component {
     constructor(props) {
         super(props);
-        this.state = { startValidate: false, type: "selection", data: [
-            {
-                status: false,
-                details: [
-                    {
-                        type: "text",
-                        content: "This is just a "
-                    },
-                    {
-                        type: "select",
-                        options: ["great", "normal", "not good"],
-                        expected: "good",
-                        selected: ""
-                    },
-                    {
-                        type: "text",
-                        content: "aiya... "
-                    }
-                ]
-            },
-            {
-                status: false,
-                details: [
-                    {
-                        type: "text",
-                        content: "This is just a "
-                    },
-                    {
-                        type: "select",
-                        options: ["great", "normal", "not good"],
-                        expected: "normal",
-                        selected: "",
-                        matched: false
-                    },
-                    {
-                        type: "text",
-                        content: "aiya... "
-                    },
-                    {
-                        type: "select",
-                        options: ["great", "normal", "not good"],
-                        expected: "normal",
-                        selected: "",
-                        matched: false
-                    },
-                    {
-                        type: "text",
-                        content: "2nd... "
-                    }
-                ]
-            },
-            {
-                status: false,
-                details: [
-                    {
-                        type: "text",
-                        content: "This is just a "
-                    },
-                    {
-                        type: "select",
-                        options: ["great", "normal", "not good"],
-                        expected: "normal",
-                        selected: "",
-                        matched: false
-                    },
-                    {
-                        type: "text",
-                        content: "aiya... "
-                    },
-                    {
-                        type: "select",
-                        options: ["great", "normal", "not good"],
-                        expected: "normal",
-                        selected: "",
-                        matched: false
-                    },
-                    {
-                        type: "text",
-                        content: "2nd... "
-                    }
-                ]
-            }
-        ]};
+        this.state = { startValidate: false, type: "selection", data: []};
 
         this.renderNode = this.renderNode.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.refreshData = this.refreshData.bind(this);
     }
 
     validate() {
         let newState = this.state;
         newState.startValidate = true;
         this.setState(newState);
+    }
+
+    componentDidMount() {
+        this.refreshData();
+    }
+
+    refreshData() {
+        fetch(`http://${config.host}/getquestion/type/selection`, {
+            method: 'get',
+        })
+            .then(response => {
+                return response.json();
+            })
+            .then(json => {
+                let newState = this.state;
+                newState.data = json.data;
+                console.log("new State");
+                console.log(newState);
+                this.setState(newState);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     handleChange = event => {

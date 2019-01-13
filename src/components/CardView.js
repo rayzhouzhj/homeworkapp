@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import Content from './Content';
-import hardworking from "../assets/images/hardworking.gif"
+import OrderingCard from './OrderingCard';
+import SelectionCard from './SelectionCard';
 
 const styles = {
     layout: {
@@ -31,18 +30,32 @@ class CardView extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { };
-        this.child = React.createRef();
-        this.onClick = this.onClick.bind(this);
+        this.state = { questionType: "ordering" };
+        this.childOrdering = React.createRef();
+        this.childSelection = React.createRef();
+        this.currentChild = this.childOrdering;
+        this.refreshData = this.refreshData.bind(this);
         this.validate = this.validate.bind(this);
+        this.updateType = this.updateType.bind(this);
     }
 
-    onClick = () => {
-        this.child.current.refreshData();
+    refreshData = () => {
+        this.currentChild.current.refreshData();
     };
 
     validate = () => {
-        this.child.current.validate();
+        this.currentChild.current.validate();
+    };
+
+    updateType = () => {
+        if (this.state.questionType == "selection") {
+            this.setState({ questionType: "ordering" });
+            this.currentChild = this.childOrdering;
+        } else {
+            this.setState({ questionType: "selection" });
+            this.currentChild = this.childSelection;
+        }
+
     };
 
     render() {
@@ -50,11 +63,14 @@ class CardView extends Component {
             <div style={styles.layout}>
                 <Card style={styles.card}>
                     <CardContent>
-                        <Content ref={this.child}/>
+                        {
+                            this.state.questionType === "ordering" ? <OrderingCard ref={this.childOrdering} /> : <SelectionCard ref={this.childSelection} />
+                        }
                     </CardContent>
                     <CardActions>
                         <Button size="small" onClick={this.validate}>Check</Button>
-                        <Button size="small" onClick={this.onClick}>Next</Button>
+                        <Button size="small" onClick={this.refreshData}>Next</Button>
+                        <Button size="small" onClick={this.updateType}>Change</Button>
                     </CardActions>
                 </Card>
             </div>

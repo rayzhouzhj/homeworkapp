@@ -5,6 +5,8 @@ import config from '../config.json'
 import hardworking from "../assets/images/hardworking.gif"
 import haha from "../assets/images/haha.gif"
 import ohno from "../assets/images/ohno.gif"
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -51,8 +53,11 @@ const getListStyle = (isMobile, isDraggingOver) => {
     };
 
     const imageStyle = {
-        height: "42px", 
-        width: "42px"
+        bigAvatar: {
+            margin: 10,
+            width: 60,
+            height: 60,
+        }
     }
 
 class OrderingCard extends Component {
@@ -130,10 +135,15 @@ class OrderingCard extends Component {
     render() {
         return (
             <div>
-                <div id="result">
-                    <img src={this.state.statusImg} style={imageStyle} alt="hard working..."/>
-                </div>
-            
+                <Grid container spacing={24}>
+                    <Grid item xs={1}>
+                        <img src={this.state.statusImg} style={imageStyle.bigAvatar} alt="hard working..." />
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Typography variant="h4" style={{ marginTop: 20, marginLeft: 5}}>排序題</Typography>
+                    </Grid>
+                </Grid>
+
                 <DragDropContext onDragEnd={this.onDragEnd}>
                     <Droppable droppableId="droppable" direction={isMobile? 'vertical' : 'horizontal'}>
                         {(provided, snapshot) => (

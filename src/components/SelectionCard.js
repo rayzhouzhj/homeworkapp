@@ -8,6 +8,7 @@ import hardworking from "../assets/images/hardworking.gif"
 import haha from "../assets/images/haha.gif"
 import ohno from "../assets/images/ohno.gif"
 import config from '../config.json'
+import Grid from '@material-ui/core/Grid';
 
 const styles = {
     select: {
@@ -16,12 +17,17 @@ const styles = {
     },
     text: {
         fontSize: 18,
+    },
+    bigAvatar: {
+        width: 60,
+        height: 60,
     }
 };
 
 const divs = {
     left: {
-        float: "left"
+        float: "left",
+        paddingTop: 10
     },
     right: {
         float: "right"
@@ -145,6 +151,15 @@ class SelectionCard extends Component {
     render() {
         return (
             <div>
+                <Grid container spacing={24}>
+                    <Grid item xs={1}>
+                        <img src={hardworking} style={styles.bigAvatar} alt="hard working..." />
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Typography variant="h4" style={{ marginTop: 10, marginLeft: 5 }}>選擇題</Typography>
+                    </Grid>
+                </Grid>
+
                 <List component="nav">
                     {
                         this.state.data.map((node, nodeIndex) => (

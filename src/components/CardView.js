@@ -13,10 +13,10 @@ const styles = {
     card: {
         minWidth: 275,
     },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
+    bigAvatar: {
+        margin: 10,
+        width: 60,
+        height: 60,
     },
     title: {
         fontSize: 14,

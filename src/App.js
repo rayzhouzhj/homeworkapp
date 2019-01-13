@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import NestedList from './components/NestedList'
 import CardView from './components/CardView'
 import { withStyles } from '@material-ui/core/styles';
+import UserView from "./components/UserView";
 
 const drawerWidth = 240;
 
@@ -61,7 +62,7 @@ class App extends React.Component {
 
         const drawer = (
             <div>
-                <div className={classes.toolbar} />
+                <UserView />
                 <Divider />
                 <NestedList/>
             </div>

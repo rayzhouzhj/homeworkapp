@@ -7,12 +7,11 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
 import Folder from '@material-ui/icons/Folder';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import StarBorder from '@material-ui/icons/StarBorder';
+import LooksOne from '@material-ui/icons/LooksOne';
 
 const styles = theme => ({
     root: {
@@ -26,12 +25,21 @@ const styles = theme => ({
 });
 
 class NestedList extends React.Component {
-    state = {
-        open: true,
-    };
+    constructor(props) {
+        super(props);
+        this.state = { 
+            "chineseFolder": false,
+            "englishFolder": false,
+            "mathFolder": false,
+            "generalFolder": false,
+         };
+    }
 
-    handleClick = () => {
-        this.setState(state => ({ open: !state.open }));
+    handleClick = (folder) => {
+        let newState = this.state;
+        newState[folder] = !newState[folder];
+        console.log(newState);
+        this.setState(newState);
     };
 
     render() {
@@ -49,41 +57,74 @@ class NestedList extends React.Component {
                     </ListItemIcon>
                     <ListItemText inset primary="我的小目標" />
                 </ListItem>
-                <ListItem button>
+                <ListItem button onClick={() => this.handleClick("chineseFolder")}>
                     <ListItemIcon>
                         <Folder />
                     </ListItemIcon>
                     <ListItemText inset primary="中文" />
+                    {this.state.chineseFolder ? <ExpandLess /> : <ExpandMore />}
                 </ListItem>
-                <ListItem button>
-                    <ListItemIcon>
-                        <Folder />
-                    </ListItemIcon>
-                    <ListItemText inset primary="English" />
-                </ListItem>
-                <ListItem button>
-                    <ListItemIcon>
-                        <Folder />
-                    </ListItemIcon>
-                    <ListItemText inset primary="數學" />
-                </ListItem>
-                <ListItem button onClick={this.handleClick}>
-                    <ListItemIcon>
-                        <Folder />
-                    </ListItemIcon>
-                    <ListItemText inset primary="常識" />
-                    {/* {this.state.open ? <ExpandLess /> : <ExpandMore />} */}
-                </ListItem>
-                {/* <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+                <Collapse in={this.state.chineseFolder} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                         <ListItem button className={classes.nested}>
                             <ListItemIcon>
-                                <StarBorder />
+                                <LooksOne />
                             </ListItemIcon>
                             <ListItemText inset primary="一年級" />
                         </ListItem>
                     </List>
-                </Collapse> */}
+                </Collapse>
+                <ListItem button onClick={() => this.handleClick("englishFolder")}>
+                    <ListItemIcon>
+                        <Folder />
+                    </ListItemIcon>
+                    <ListItemText inset primary="English" />
+                    {this.state.englishFolder ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={this.state.englishFolder} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                        <ListItem button className={classes.nested}>
+                            <ListItemIcon>
+                                <LooksOne />
+                            </ListItemIcon>
+                            <ListItemText inset primary="一年級" />
+                        </ListItem>
+                    </List>
+                </Collapse>
+                <ListItem button onClick={() => this.handleClick("mathFolder")}>
+                    <ListItemIcon>
+                        <Folder />
+                    </ListItemIcon>
+                    <ListItemText inset primary="數學" />
+                    {this.state.mathFolder ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={this.state.mathFolder} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                        <ListItem button className={classes.nested}>
+                            <ListItemIcon>
+                                <LooksOne />
+                            </ListItemIcon>
+                            <ListItemText inset primary="一年級" />
+                        </ListItem>
+                    </List>
+                </Collapse>
+                <ListItem button onClick={() => this.handleClick("generalFolder")}>
+                    <ListItemIcon>
+                        <Folder />
+                    </ListItemIcon>
+                    <ListItemText inset primary="常識" />
+                    {this.state.generalFolder ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={this.state.generalFolder} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                        <ListItem button className={classes.nested}>
+                            <ListItemIcon>
+                                <LooksOne />
+                            </ListItemIcon>
+                            <ListItemText inset primary="一年級" />
+                        </ListItem>
+                    </List>
+                </Collapse>
             </List>
         );
     }

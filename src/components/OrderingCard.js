@@ -73,7 +73,7 @@ class OrderingCard extends Component {
     }
 
     refreshData() {
-        fetch(`http://${config.host}/getquestion/type/reorder`, {
+        fetch(`http://${config.host}/getquestion/course/chinese/type/reorder`, {
             method: 'get',
         })
             .then(response => {

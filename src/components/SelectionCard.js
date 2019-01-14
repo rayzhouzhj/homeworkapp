@@ -13,7 +13,9 @@ import Grid from '@material-ui/core/Grid';
 const styles = {
     select: {
         marginLeft: '10px',
-        marginRight: '10px'
+        marginRight: '10px',
+        marginBottom: 10,
+        fontSize: 18
     },
     text: {
         fontSize: 18,
@@ -65,7 +67,7 @@ class SelectionCard extends Component {
     }
 
     refreshData() {
-        fetch(`http://${config.host}/getquestion/type/selection`, {
+        fetch(`http://${config.host}/getquestion/course/english/type/selection`, {
             method: 'get',
         })
             .then(response => {
@@ -74,6 +76,7 @@ class SelectionCard extends Component {
             .then(json => {
                 let newState = this.state;
                 newState.data = json.data;
+                newState.startValidate = false;
                 console.log("new State");
                 console.log(newState);
                 this.setState(newState);

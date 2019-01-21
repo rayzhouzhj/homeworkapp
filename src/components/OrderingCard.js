@@ -63,6 +63,7 @@ const getListStyle = (isMobile, isDraggingOver) => {
 class OrderingCard extends Component {
     constructor(props) {
         super(props);
+        this.subject = this.props.subject;
         this.state = {type: "", data: [], in: true, statusImg: hardworking};
         this.onDragEnd = this.onDragEnd.bind(this);
         this.refreshData = this.refreshData.bind(this);
@@ -73,7 +74,7 @@ class OrderingCard extends Component {
     }
 
     refreshData() {
-        fetch(`http://${config.host}/getquestion/course/chinese/type/reorder`, {
+        fetch(`http://${config.host}/getquestion/subject/${this.subject}/type/reorder`, {
             method: 'get',
         })
             .then(response => {

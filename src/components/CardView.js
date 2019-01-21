@@ -5,6 +5,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import OrderingCard from './OrderingCard';
 import SelectionCard from './SelectionCard';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import { TweenMax } from "gsap/TweenMax";
+import { TimelineLite, CSSPlugin } from "gsap/all";
 
 const styles = {
     layout: {
@@ -31,12 +34,16 @@ class CardView extends Component {
     constructor(props) {
         super(props);
         this.state = { questionType: "ordering" };
+        this.subject = this.props.match.params.subject;
         this.childOrdering = React.createRef();
         this.childSelection = React.createRef();
         this.currentChild = this.childOrdering;
         this.refreshData = this.refreshData.bind(this);
         this.validate = this.validate.bind(this);
         this.updateType = this.updateType.bind(this);
+
+        // this.container = null;
+        // this.logoTween = null;
     }
 
     refreshData = () => {
@@ -58,19 +65,41 @@ class CardView extends Component {
 
     };
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.location.state.refresh === true) {
+            this.subject = nextProps.match.params.subject;
+            this.updateType();
+        }
+    }
+    // componentDidMount(){
+    //     this.logoTween = new TimelineLite({ paused: false })
+    //         .to(this.logoContainer, 2, { x: 500 })
+    //         .to(this.logoContainer, 1, { rotation: 360, transformOrigin: "center" });
+    // }
+
+    // componentWillEnter(callback) {
+    //     const el = this.container;
+    //     TweenMax.fromTo(el, 0.3, { y: 100, opacity: 0 }, { y: 0, opacity: 1, onComplete: callback });
+    // }
+
+    // componentWillLeave(callback) {
+    //     const el = this.container;
+    //     TweenMax.fromTo(el, 0.3, { y: 0, opacity: 1 }, { y: -100, opacity: 0, onComplete: callback });
+    // }
+
     render() {
         return (
             <div style={styles.layout}>
                 <Card style={styles.card}>
                     <CardContent>
                         {
-                            this.state.questionType === "ordering" ? <OrderingCard ref={this.childOrdering} /> : <SelectionCard ref={this.childSelection} />
+                            this.state.questionType === "ordering" ? <OrderingCard ref={this.childOrdering} subject={this.subject} /> : <SelectionCard ref={this.childSelection} subject={this.subject}/>
                         }
                     </CardContent>
                     <CardActions>
                         <Button size="small" onClick={this.validate}>Check</Button>
                         <Button size="small" onClick={this.refreshData}>Next</Button>
-                        <Button size="small" onClick={this.updateType}>Change</Button>
+                        <Button size="small" onClick={this.updateType} ref={card => this.container = card}>Change</Button>
                     </CardActions>
                 </Card>
             </div>

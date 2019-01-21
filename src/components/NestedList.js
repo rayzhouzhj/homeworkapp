@@ -12,6 +12,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import StarBorder from '@material-ui/icons/StarBorder';
 import LooksOne from '@material-ui/icons/LooksOne';
+import { Link } from 'react-router-dom';
 
 const styles = theme => ({
     root: {
@@ -70,7 +71,10 @@ class NestedList extends React.Component {
                             <ListItemIcon>
                                 <LooksOne />
                             </ListItemIcon>
-                            <ListItemText inset primary="一年級" />
+                            <Link to={{
+                                pathname: "/subject/chinese",
+                                state: { refresh: true }
+                            }}><ListItemText inset primary="一年級" /></Link>
                         </ListItem>
                     </List>
                 </Collapse>
@@ -87,7 +91,9 @@ class NestedList extends React.Component {
                             <ListItemIcon>
                                 <LooksOne />
                             </ListItemIcon>
-                            <ListItemText inset primary="一年級" />
+                            <Link to={{
+                                pathname: "/subject/english",
+                                state: { refresh: true }}}><ListItemText inset primary="一年級" /></Link>
                         </ListItem>
                     </List>
                 </Collapse>

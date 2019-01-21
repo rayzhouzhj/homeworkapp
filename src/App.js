@@ -13,6 +13,7 @@ import NestedList from './components/NestedList'
 import CardView from './components/CardView'
 import { withStyles } from '@material-ui/core/styles';
 import UserView from "./components/UserView";
+import { Switch, Route } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -116,7 +117,10 @@ class App extends React.Component {
                 </nav>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    <CardView />
+                    <Switch>
+                        <Route path='/subject/:subject' component={CardView} />
+                    </Switch>
+                    
                 </main>
             </div>
         );

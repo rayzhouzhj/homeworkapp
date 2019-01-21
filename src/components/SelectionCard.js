@@ -50,6 +50,7 @@ class SelectionCard extends Component {
     constructor(props) {
         super(props);
         this.state = { startValidate: false, type: "selection", data: []};
+        this.subject = this.props.subject;
 
         this.renderNode = this.renderNode.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -67,7 +68,7 @@ class SelectionCard extends Component {
     }
 
     refreshData() {
-        fetch(`http://${config.host}/getquestion/course/english/type/selection`, {
+        fetch(`http://${config.host}/getquestion/subject/${this.subject}/type/selection`, {
             method: 'get',
         })
             .then(response => {

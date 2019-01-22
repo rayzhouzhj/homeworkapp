@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -25,7 +24,7 @@ const styles = theme => ({
     },
 });
 
-class NestedList extends React.Component {
+class SideMenuList extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
@@ -136,8 +135,8 @@ class NestedList extends React.Component {
     }
 }
 
-NestedList.propTypes = {
+SideMenuList.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(NestedList);
+export default withStyles(styles)(SideMenuList);

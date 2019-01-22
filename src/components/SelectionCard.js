@@ -156,11 +156,9 @@ class SelectionCard extends Component {
         return (
             <div>
                 <Grid container spacing={24}>
-                    <Grid item xs={1}>
-                        <img src={hardworking} style={styles.bigAvatar} alt="hard working..." />
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Typography variant="h4" style={{ marginTop: 10, marginLeft: 5 }}>選擇題</Typography>
+                    <Grid item xs={12}>
+                        <div style={{ float: 'left' }}><img src={hardworking} style={styles.bigAvatar} alt="hard working..." /></div>
+                        <div><Typography variant="h4" style={{ marginTop: 20, marginLeft: 5 }}>選擇題</Typography></div>
                     </Grid>
                 </Grid>
 

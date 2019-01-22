@@ -9,11 +9,11 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import NestedList from './components/NestedList'
-import CardView from './components/CardView'
+import SideMenuList from './components/SideMenuList';
+import MainView from './components/MainView';
 import { withStyles } from '@material-ui/core/styles';
 import UserView from "./components/UserView";
-import { Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -65,11 +65,12 @@ class App extends React.Component {
             <div>
                 <UserView />
                 <Divider />
-                <NestedList/>
+                <SideMenuList/>
             </div>
         );
 
         return (
+            <BrowserRouter>
             <div className={classes.root}>
                 <CssBaseline />
                 <AppBar position="fixed" className={classes.appBar}>
@@ -117,12 +118,10 @@ class App extends React.Component {
                 </nav>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    <Switch>
-                        <Route path='/subject/:subject' component={CardView} />
-                    </Switch>
-                    
+                    <Route path='/subject/:subject' component={MainView} />
                 </main>
             </div>
+            </BrowserRouter>
         );
     }
 }

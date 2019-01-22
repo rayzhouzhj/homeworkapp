@@ -66,15 +66,18 @@ class SideMenuList extends React.Component {
                 </ListItem>
                 <Collapse in={this.state.chineseFolder} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
+                        <Link to={{
+                            pathname: "/subject/chinese",
+                            state: { refresh: true }
+                        }}
+                            style={{ textDecoration: 'none' }}>
                         <ListItem button className={classes.nested}>
                             <ListItemIcon>
                                 <LooksOne />
                             </ListItemIcon>
-                            <Link to={{
-                                pathname: "/subject/chinese",
-                                state: { refresh: true }
-                            }}><ListItemText inset primary="一年級" /></Link>
+                            <ListItemText inset primary="一年級" />
                         </ListItem>
+                        </Link>
                     </List>
                 </Collapse>
                 <ListItem button onClick={() => this.handleClick("englishFolder")}>
@@ -86,14 +89,18 @@ class SideMenuList extends React.Component {
                 </ListItem>
                 <Collapse in={this.state.englishFolder} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
+                        <Link to={{
+                            pathname: "/subject/english",
+                            state: { refresh: true }
+                        }}
+                            style={{ textDecoration: 'none' }}>
                         <ListItem button className={classes.nested}>
                             <ListItemIcon>
                                 <LooksOne />
                             </ListItemIcon>
-                            <Link to={{
-                                pathname: "/subject/english",
-                                state: { refresh: true }}}><ListItemText inset primary="一年級" /></Link>
+                            <ListItemText inset primary="一年級" />
                         </ListItem>
+                        </Link>
                     </List>
                 </Collapse>
                 <ListItem button onClick={() => this.handleClick("mathFolder")}>

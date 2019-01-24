@@ -13,7 +13,7 @@ import SideMenuList from './components/SideMenuList';
 import MainView from './components/MainView';
 import { withStyles } from '@material-ui/core/styles';
 import UserView from "./components/UserView";
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -118,7 +118,7 @@ class App extends React.Component {
                 </nav>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    <Route path='/subject/:subject' component={MainView} />
+                    <MainView />
                 </main>
             </div>
             </BrowserRouter>

@@ -14,7 +14,7 @@ const styles = theme => ({
     },
 });
 
-class MainView extends Component {
+class SubjectMainView extends Component {
 
     constructor(props) {
         super(props);
@@ -24,18 +24,18 @@ class MainView extends Component {
     render() {
         return (
             <main className={styles.content}>
-            {
+                {
                     // this.state.onLanding? 
-            }
-            <Switch>
-                <Route exact path='/' component={GoalView} />
-                <Route path='/subject/:subject' component={CardView} />
-            </Switch>
-                
+                }
+                <Switch>
+                    <Route exact path='/' component={GoalView} />
+                    <Route path='/subject/:subject' component={CardView} />
+                </Switch>
+
             </main>
 
         );
     }
 }
 
-export default MainView;
+export default SubjectMainView;

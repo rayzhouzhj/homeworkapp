@@ -51,12 +51,18 @@ class SideMenuList extends React.Component {
                 // subheader={<ListSubheader component="div">Nested List Items</ListSubheader>}
                 className={classes.root}
             >
+                <Link to={{
+                    pathname: "/",
+                    state: { refresh: true }
+                }}
+                    style={{ textDecoration: 'none' }}>
                 <ListItem button>
                     <ListItemIcon>
                         <StarBorder />
                     </ListItemIcon>
                     <ListItemText inset primary="我的小目標" />
                 </ListItem>
+                </Link>
                 <ListItem button onClick={() => this.handleClick("chineseFolder")}>
                     <ListItemIcon>
                         <Folder />

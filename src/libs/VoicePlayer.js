@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 
 class VoicePlayer extends Component {
   constructor (props) {
@@ -59,6 +59,11 @@ class VoicePlayer extends Component {
   }
 
   componentWillReceiveProps ({ pause }) {
+
+    if (!pause && !this.state.started) {
+      this.speak()
+    }
+
     if (pause && this.state.playing && this.state.started) {
       return this.pause()
     }

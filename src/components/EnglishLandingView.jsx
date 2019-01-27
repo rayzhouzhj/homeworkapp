@@ -26,14 +26,6 @@ const styles = theme => ({
     }
 });
 
-class RelatedWords extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {landingViewRelated: [] };
-
-    }
-}
-
 class EnglishLandingView extends Component {
     constructor(props) {
         super(props);
@@ -153,10 +145,10 @@ class EnglishLandingView extends Component {
                             style={{ textDecoration: 'none' }}>
                         <Button>Selection</Button>
                         </Link>
-                        <Switch>
+                        {/* <Switch>
                             <Route path='/subject/english/ditation' component={DitationCard} />
                             <Route path='/subject/english/selection' render={() => <SelectionCard subject="english"/>} />
-                        </Switch>
+                        </Switch> */}
                     </Typography>
                     
                 </SwipeableViews>

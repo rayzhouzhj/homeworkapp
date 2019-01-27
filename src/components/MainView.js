@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import EnglishLandingView from './EnglishLandingView';
 import { Route, Switch } from 'react-router-dom'
 import GoalView from './GoalView';
+import DitationCard from './DitationCard';
 
 const styles = theme => ({
     root: {
@@ -29,6 +30,7 @@ class MainView extends Component {
             }
             <Switch>
                 <Route exact path='/' component={GoalView} />
+                <Route path='/subject/english/ditation' component={DitationCard} />
                 <Route path='/subject/english' component={EnglishLandingView} />
             </Switch>
                 

@@ -9,9 +9,17 @@ import haha from "../assets/images/haha.gif"
 import ohno from "../assets/images/ohno.gif"
 import config from '../config.json'
 import Grid from '@material-ui/core/Grid';
-import VoiceChip from './VoiceChip';
+import VoiceButton from './VoiceButton';
+import TextField from '@material-ui/core/TextField';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
 
 const styles = {
+    card: {
+        minWidth: 275,
+    },
     select: {
         marginLeft: '10px',
         marginRight: '10px',
@@ -52,7 +60,7 @@ class DitationCard extends Component {
         super(props);
         this.state = { startValidate: false, type: "ditation", data: [] };
         this.subject = this.props.subject;
-
+        console.log("initial state: " + this.state);
         this.refreshData = this.refreshData.bind(this);
     }
 
@@ -66,8 +74,12 @@ class DitationCard extends Component {
         this.refreshData();
     }
 
+    validate = () => {
+        this.validate = this.validate.bind(this);
+    };
+
     refreshData() {
-        fetch(`http://${config.host}/getquestion/subject/${this.subject}/grade/1/semeter/2/type/ditation`, {
+        fetch(`http://${config.host}/getquestions/subject/english/grade/1/semester/2/type/ditation`, {
             method: 'get',
         })
             .then(response => {
@@ -75,7 +87,7 @@ class DitationCard extends Component {
             })
             .then(json => {
                 let newState = this.state;
-                newState.data = json.data;
+                newState.data = json;
                 newState.startValidate = false;
                 console.log("new State");
                 console.log(newState);
@@ -87,8 +99,10 @@ class DitationCard extends Component {
     }
 
     render() {
+        console.log("render state: " + this.state);
         return (
-            <div>
+            <Card style={styles.card}>
+                <CardContent>
                 <Grid container spacing={24}>
                     <Grid item xs={12}>
                         <div style={{ float: 'left' }}><img src={hardworking} style={styles.bigAvatar} alt="hard working..." /></div>
@@ -96,20 +110,33 @@ class DitationCard extends Component {
                     </Grid>
                 </Grid>
 
-                <div className={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    flexWrap: 'wrap',
-                }}>
+                
                     {
-                        this.state.onLandingReview.map((node, nodeIndex) => (
-                            // <Grid container spacing={24} key={`ditation-list-item${nodeIndex}`}>
-                                <VoiceChip text={node} />
-                            // </Grid>
+                        this.state.data.map((node, nodeIndex) => (
+                            <Grid container spacing={24} key={`ditation-list${nodeIndex}`}>
+                                <Grid item xs="auto"><Typography variant="h5" style={{ marginTop: 8}}>{nodeIndex+1}.</Typography></Grid>
+                                <Grid item xs={node.length > 10? 8 : 3} >
+                                    
+                                    <TextField
+                                        style={{ margin: 8 }}
+                                        fullWidth
+                                        margin="normal"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item xs={3} >
+                                    <VoiceButton text={node} />
+                                </Grid>
+                            </Grid>
                         ))
                     }
-                </div>
-            </div>
+                    </CardContent>
+                <CardActions>
+                    <Button size="small" onClick={this.validate}>Check</Button>
+                </CardActions>
+            </Card>
         )
     }
 }

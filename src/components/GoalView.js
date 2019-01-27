@@ -5,6 +5,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import DitationCard from './DitationCard';
 
 const styles = theme => ({
     root: {
@@ -13,13 +14,6 @@ const styles = theme => ({
         paddingBottom: theme.spacing.unit * 2,
     },
 });
-
-// const styles = theme => ({
-//     root: {
-//         backgroundColor: theme.palette.background.paper,
-//         width: 500,
-//     },
-// });
 
 class GoalView extends Component {
     state = {

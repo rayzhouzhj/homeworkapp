@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CardView from './CardView';
+import EnglishLandingView from './EnglishLandingView';
 import { Route, Switch } from 'react-router-dom'
 import GoalView from './GoalView';
 
@@ -29,7 +29,7 @@ class MainView extends Component {
             }
             <Switch>
                 <Route exact path='/' component={GoalView} />
-                <Route path='/subject/:subject' component={CardView} />
+                <Route path='/subject/english' component={EnglishLandingView} />
             </Switch>
                 
             </main>

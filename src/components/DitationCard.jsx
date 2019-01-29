@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
-import MenuItem from '@material-ui/core/MenuItem';
 import hardworking from "../assets/images/hardworking.gif"
 import haha from "../assets/images/haha.gif"
 import ohno from "../assets/images/ohno.gif"
@@ -49,7 +45,7 @@ const getImageStyle = (startValidate) => {
     return ({
         height: "30px",
         width: "30px",
-        marginRight: 10,
+        marginTop: 10,
         display: startValidate ? "inline-block" : "none"
     });
 
@@ -60,23 +56,33 @@ class DitationCard extends Component {
         super(props);
         this.state = { startValidate: false, type: "ditation", data: [] };
         this.subject = this.props.subject;
-        console.log("initial state: " + this.state);
         this.refreshData = this.refreshData.bind(this);
+        this.validate = this.validate.bind(this);
+        this.onTextFieldChange = this.onTextFieldChange.bind(this);
     }
 
-    validate() {
+    validate = () => {
         let newState = this.state;
-        newState.startValidate = true;
+        if (newState.startValidate){
+            newState.data.forEach(v => {v.label = v.content});
+        }else{
+            newState.startValidate = true;
+        }
+        
+        this.setState(newState);
+    }
+
+    onTextFieldChange = (e, index) => {
+        e.preventDefault();
+        let newState = this.state;
+        newState.data[index].current = e.target.value;
+        newState.data[index].matched = newState.data[index].current === newState.data[index].content;
         this.setState(newState);
     }
 
     componentDidMount() {
         this.refreshData();
     }
-
-    validate = () => {
-        this.validate = this.validate.bind(this);
-    };
 
     refreshData() {
         fetch(`http://${config.host}/getquestions/subject/english/grade/1/semester/2/type/ditation`, {
@@ -87,10 +93,8 @@ class DitationCard extends Component {
             })
             .then(json => {
                 let newState = this.state;
-                newState.data = json;
+                newState.data = json.map(data => ({label: "", current: "", content: data, matched: false}));
                 newState.startValidate = false;
-                console.log("new State");
-                console.log(newState);
                 this.setState(newState);
             })
             .catch(error => {
@@ -99,35 +103,44 @@ class DitationCard extends Component {
     }
 
     render() {
-        console.log("render state: " + this.state);
         return (
             <Card style={styles.card}>
                 <CardContent>
                 <Grid container spacing={24}>
                     <Grid item xs={12}>
                         <div style={{ float: 'left' }}><img src={hardworking} style={styles.bigAvatar} alt="hard working..." /></div>
-                        <div><Typography variant="h4" style={{ marginTop: 20, marginLeft: 5 }}>Ditation</Typography></div>
+                        <div><Typography variant="h4" style={{ marginTop: 20, paddingLeft: 10 }}>Ditation</Typography></div>
                     </Grid>
                 </Grid>
 
                 
                     {
                         this.state.data.map((node, nodeIndex) => (
-                            <Grid container spacing={24} key={`ditation-list${nodeIndex}`}>
-                                <Grid item xs="auto"><Typography variant="h5" style={{ marginTop: 8}}>{nodeIndex+1}.</Typography></Grid>
-                                <Grid item xs={node.length > 10? 8 : 3} >
+                            <Grid container spacing={12} key={`ditation-list${nodeIndex}`}>
+                                <Grid item xs="auto"><Typography variant="h5" style={{ paddingRight: nodeIndex>8?0:15, marginTop: 8}}>{nodeIndex+1}.</Typography></Grid>
+                                <Grid item xs={node.content.length > 10? 8 : 3} >
                                     
                                     <TextField
                                         style={{ margin: 8 }}
+                                        label={node.label}
                                         fullWidth
                                         margin="normal"
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
+                                        onChange={(e) => this.onTextFieldChange(e, nodeIndex)}
                                     />
                                 </Grid>
                                 <Grid item xs={3} >
-                                    <VoiceButton text={node} />
+                                    <div style={{ float: 'left' }}><VoiceButton text={node.content} /></div>
+                                    
+                                    <div key={`ditation-list${nodeIndex}-validate`}>
+                                        {
+                                            <img src={
+                                                this.state.data[nodeIndex].matched ? haha : ohno
+                                            } style={getImageStyle(this.state.startValidate)} alt="hard working..." />
+                                        } 
+                                    </div>
                                 </Grid>
                             </Grid>
                         ))

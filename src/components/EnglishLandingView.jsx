@@ -6,10 +6,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import VoiceChip from './VoiceChip';
-import config from '../config.json'
-import { Route, Switch } from 'react-router-dom'
-import DitationCard from './DitationCard';
-import SelectionCard from './SelectionCard';
+import config from '../config.json';
 import { Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 
@@ -29,8 +26,7 @@ const styles = theme => ({
 class EnglishLandingView extends Component {
     constructor(props) {
         super(props);
-        this.state = { value: 0, onLandingReview: [], landingViewRelated: []};
-        this.handleClick = this.handleClick.bind(this);
+        this.state = { value: 0, onLandingReview: []};
         this.refreshData = this.refreshData.bind(this);
 
     }
@@ -50,23 +46,11 @@ class EnglishLandingView extends Component {
                 let newState = this.state;
                 newState.onLandingReview = json.onLandingReview;
                 newState.startValidate = false;
-                console.log("new State");
-                console.log(newState);
                 this.setState(newState);
             })
             .catch(error => {
                 console.log(error);
             });
-    }
-
-    handleClick= (data) => {
-        console.log("Handle related =>");
-        console.log(data);
-        let newState = this.state;
-        newState.landingViewRelated = data;
-        this.setState(newState);
-
-        this.forceUpdate();
     }
 
     handleChange = (event, value) => {
@@ -111,21 +95,9 @@ class EnglishLandingView extends Component {
                         }}>
                             {
                                 this.state.onLandingReview.map((node, nodeIndex) => (
-                                    <div onClick={() => this.handleClick(node.related)} key={`landing-list-div-item${nodeIndex}`}>
-                                    <VoiceChip label={node.displayText} sound={node.sound} key={`landing-list-item${nodeIndex}`}/>
+                                    <div key={`landing-list-div-item${nodeIndex}`}>
+                                        <VoiceChip label={node.displayText} sound={node.sound} key={`landing-list-item${nodeIndex}`} related={node.related}/>
                                     </div>
-                                ))
-                            }
-                        </div>
-                        <div style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            flexWrap: 'wrap',
-                        }}>
-                            {
-                                this.state.landingViewRelated.length > 0 &&
-                                this.state.landingViewRelated.map((text, nodeIndex) => (
-                                    <VoiceChip label={text} sound={text} key={`landing-list-item-related${nodeIndex}`} />
                                 ))
                             }
                         </div>

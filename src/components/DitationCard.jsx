@@ -106,7 +106,7 @@ class DitationCard extends Component {
                 
                     {
                         this.state.data.map((node, nodeIndex) => (
-                            <Grid container spacing={12} key={`ditation-list${nodeIndex}`}>
+                            <Grid container spacing={16} key={`ditation-list${nodeIndex}`}>
                                 <Grid item xs="auto"><Typography variant="h5" style={{ paddingRight: nodeIndex>8?0:15, marginTop: 8}}>{nodeIndex+1}.</Typography></Grid>
                                 <Grid item xs={node.content.length > 10? 8 : 3} >
                                     

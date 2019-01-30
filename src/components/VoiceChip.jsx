@@ -15,8 +15,6 @@ class VoiceChip extends React.Component {
             playing: false,
             label: this.props.label,
             sound: this.props.sound,
-            anchorEl: null,
-            open: false,
             related: this.props.related
         }
 
@@ -30,21 +28,14 @@ class VoiceChip extends React.Component {
         this.setState(newSate);
     }
 
-    changeState = (event) => {
+    changeState = () => {
         let newSate = this.state;
         newSate.playing = !this.state.playing;
-        newSate.anchorEl = event.currentTarget;
-        newSate.open = !this.state.open;
+        console.log('change state');
+        console.log(newSate);
         this.setState(newSate);
     }
     
-    dismissPopover = () => {
-        let newSate = this.state;
-        newSate.anchorEl = null;
-        newSate.open = !this.state.open;
-        this.setState(newSate);
-    }
-
     render() {
         return (
             
@@ -53,7 +44,7 @@ class VoiceChip extends React.Component {
                     <React.Fragment>
                         <Chip
                             label={this.state.label}
-                            onClick={this.changeState}
+                            onMouseEnter={this.changeState}
                             style={{fontSize: 18, margin: 8}}
                             {...bindTrigger(popupState)}
                         />
@@ -62,25 +53,29 @@ class VoiceChip extends React.Component {
                             text={this.state.sound}
                             onEnd={this.onEnd}
                         />
-                        <Popover
-                            {...bindPopover(popupState)}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'center',
-                            }}
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'center',
-                            }}
-                        >
-                            <Paper>
-                                {
-                                    this.state.related.map((text, nodeIndex) => (
-                                        <VoiceChip label={text} sound={text} key={`landing-list-item-related${nodeIndex}`} related={[]}/>
-                                    ))
-                                }
-                            </Paper>
-                        </Popover>
+                        {
+                            this.state.related.length > 0 && 
+                            <Popover
+                                {...bindPopover(popupState)}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                            >
+                                <Paper>
+                                    {
+                                        this.state.related.map((text, nodeIndex) => (
+                                            <VoiceChip label={text} sound={text} key={`landing-list-item-related${nodeIndex}`} related={[]} />
+                                        ))
+                                    }
+                                </Paper>
+                            </Popover>
+                        }
+                        
                     </React.Fragment>
                 )}
                 </PopupState>

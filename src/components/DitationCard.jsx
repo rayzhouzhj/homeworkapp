@@ -31,16 +31,6 @@ const styles = {
     }
 };
 
-const divs = {
-    left: {
-        float: "left",
-        paddingTop: 10
-    },
-    right: {
-        float: "right"
-    }
-}
-
 const getImageStyle = (startValidate) => {
     return ({
         height: "30px",

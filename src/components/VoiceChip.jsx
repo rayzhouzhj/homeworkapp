@@ -2,9 +2,9 @@
 import React from 'react';
 import VoicePlayer from '../libs/VoicePlayer';
 import Chip from '@material-ui/core/Chip';
-import Fade from '@material-ui/core/Fade';
-import Popper from '@material-ui/core/Popper';
+import Popover from '@material-ui/core/Popover';
 import Paper from '@material-ui/core/Paper';
+import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state'
 
 class VoiceChip extends React.Component {
     constructor(props) {
@@ -38,22 +38,41 @@ class VoiceChip extends React.Component {
         this.setState(newSate);
     }
     
+    dismissPopover = () => {
+        let newSate = this.state;
+        newSate.anchorEl = null;
+        newSate.open = !this.state.open;
+        this.setState(newSate);
+    }
+
     render() {
         return (
-            <React.Fragment>
-                <Chip
-                    label={this.state.label}
-                    onClick={this.changeState}
-                    style={{fontSize: 18, margin: 8}}
-                />
-                <VoicePlayer
-                    pause={!this.state.playing}
-                    text={this.state.sound}
-                    onEnd={this.onEnd}
-                />
-                <Popper open={this.state.open} anchorEl={this.state.anchorEl} transition>
-                    {({ TransitionProps }) => (
-                        <Fade {...TransitionProps} timeout={350}>
+            
+                <PopupState variant="popover" popupId="demoPopover">
+                    {popupState => (
+                    <React.Fragment>
+                        <Chip
+                            label={this.state.label}
+                            onClick={this.changeState}
+                            style={{fontSize: 18, margin: 8}}
+                            {...bindTrigger(popupState)}
+                        />
+                        <VoicePlayer
+                            pause={!this.state.playing}
+                            text={this.state.sound}
+                            onEnd={this.onEnd}
+                        />
+                        <Popover
+                            {...bindPopover(popupState)}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'center',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                            }}
+                        >
                             <Paper>
                                 {
                                     this.state.related.map((text, nodeIndex) => (
@@ -61,10 +80,10 @@ class VoiceChip extends React.Component {
                                     ))
                                 }
                             </Paper>
-                        </Fade>
-                    )}
-                </Popper>
-            </React.Fragment>
+                        </Popover>
+                    </React.Fragment>
+                )}
+                </PopupState>
         )
     }
 }

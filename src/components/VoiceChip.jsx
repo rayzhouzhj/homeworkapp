@@ -4,6 +4,7 @@ import VoicePlayer from '../libs/VoicePlayer';
 import Chip from '@material-ui/core/Chip';
 import Popover from '@material-ui/core/Popover';
 import Paper from '@material-ui/core/Paper';
+import VolumeUpRounded from '@material-ui/icons/VolumeUpRounded';
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state'
 
 class VoiceChip extends React.Component {
@@ -44,9 +45,10 @@ class VoiceChip extends React.Component {
                     <React.Fragment>
                         <Chip
                             label={this.state.label}
-                            onMouseEnter={this.changeState}
                             style={{fontSize: 18, margin: 8}}
                             {...bindTrigger(popupState)}
+                            onDelete={this.changeState}
+                            deleteIcon={<VolumeUpRounded/>}
                         />
                         <VoicePlayer
                             pause={!this.state.playing}

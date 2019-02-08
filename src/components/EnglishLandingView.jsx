@@ -9,6 +9,7 @@ import VoiceChip from './VoiceChip';
 import config from '../config.json';
 import { Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
+import Zoom from '@material-ui/core/Zoom';
 
 const styles = theme => ({
     root: {
@@ -95,9 +96,11 @@ class EnglishLandingView extends Component {
                         }}>
                             {
                                 this.state.onLandingReview.map((node, nodeIndex) => (
+                                    <Zoom in={true} style={{ transitionDelay: '200ms'}}>
                                     <div key={`landing-list-div-item${nodeIndex}`}>
                                         <VoiceChip label={node.displayText} sound={node.sound} key={`landing-list-item${nodeIndex}`} related={node.related}/>
                                     </div>
+                                    </Zoom>
                                 ))
                             }
                         </div>
